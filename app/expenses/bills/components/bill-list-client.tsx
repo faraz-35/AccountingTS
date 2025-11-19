@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { BillForm } from "./components/bill-form";
-import { PaymentModal } from "./components/payment-modal";
 import { Button } from "@/(common)/components/ui";
+import { PaymentModal } from "./payment-modal";
 import Link from "next/link";
+import {
+  billStatusLabels,
+  getBillStatusColor,
+} from "@/expenses/(common)/types";
+import { formatCurrency } from "@/accounting/(common)/utils";
 
 interface Props {
   bills: any[];
@@ -38,9 +42,6 @@ function BillPaymentButton({ bill }: { bill: any }) {
 
 // Bill list client component
 export default function BillListClient({ bills }: Props) {
-  const { billStatusLabels, getBillStatusColor } = require("../(common)/types");
-  const { formatCurrency } = require("@/accounting/(common)/utils");
-
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden">
       <div className="overflow-x-auto">
@@ -91,14 +92,18 @@ export default function BillListClient({ bills }: Props) {
                     {formatCurrency(bill.total_amount || 0)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColor.bg} ${statusColor.text}`}>
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColor.bg} ${statusColor.text}`}
+                    >
                       {billStatusLabels[bill.status]}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="space-x-2">
                       <Link href={`/expenses/bills/${bill.id}`}>
-                        <Button variant="outline" size="sm">View</Button>
+                        <Button variant="outline" size="sm">
+                          View
+                        </Button>
                       </Link>
                       {(bill.status === "DRAFT" || bill.status === "OPEN") && (
                         <BillPaymentButton bill={bill} />

@@ -221,6 +221,70 @@ export type Database = {
           },
         ]
       }
+      bank_transactions: {
+        Row: {
+          account_id: string
+          amount: number
+          created_at: string | null
+          date: string
+          description: string | null
+          external_id: string | null
+          id: string
+          matched_journal_entry_id: string | null
+          organization_id: string
+          status: Database["public"]["Enums"]["reconciliation_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          account_id: string
+          amount: number
+          created_at?: string | null
+          date: string
+          description?: string | null
+          external_id?: string | null
+          id?: string
+          matched_journal_entry_id?: string | null
+          organization_id: string
+          status?: Database["public"]["Enums"]["reconciliation_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          account_id?: string
+          amount?: number
+          created_at?: string | null
+          date?: string
+          description?: string | null
+          external_id?: string | null
+          id?: string
+          matched_journal_entry_id?: string | null
+          organization_id?: string
+          status?: Database["public"]["Enums"]["reconciliation_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bank_transactions_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bank_transactions_matched_journal_entry_id_fkey"
+            columns: ["matched_journal_entry_id"]
+            isOneToOne: false
+            referencedRelation: "journal_entries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bank_transactions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bill_lines: {
         Row: {
           account_id: string | null
@@ -858,6 +922,30 @@ export type Database = {
         Args: { p_ar_account_id: string; p_date: string; p_invoice_id: string }
         Returns: string
       }
+      get_balance_sheet: {
+        Args: { p_as_of_date: string; p_organization_id: string }
+        Returns: {
+          account_code: string
+          account_id: string
+          account_name: string
+          account_type: string
+          balance: number
+        }[]
+      }
+      get_pnl_report: {
+        Args: {
+          p_end_date: string
+          p_organization_id: string
+          p_start_date: string
+        }
+        Returns: {
+          account_code: string
+          account_id: string
+          account_name: string
+          account_type: string
+          net_amount: number
+        }[]
+      }
       pay_bill: {
         Args: {
           p_amount: number
@@ -887,6 +975,7 @@ export type Database = {
       invoice_status: "DRAFT" | "SENT" | "PAID" | "PARTIAL" | "OVERDUE" | "VOID"
       journal_status: "DRAFT" | "POSTED" | "ARCHIVED"
       organization_role: "owner" | "admin" | "member" | "viewer"
+      reconciliation_status: "UNMATCHED" | "MATCHED" | "EXCLUDED"
       user_role: "admin" | "member" | "viewer"
       user_status: "active" | "inactive" | "suspended"
     }
@@ -1022,6 +1111,7 @@ export const Constants = {
       invoice_status: ["DRAFT", "SENT", "PAID", "PARTIAL", "OVERDUE", "VOID"],
       journal_status: ["DRAFT", "POSTED", "ARCHIVED"],
       organization_role: ["owner", "admin", "member", "viewer"],
+      reconciliation_status: ["UNMATCHED", "MATCHED", "EXCLUDED"],
       user_role: ["admin", "member", "viewer"],
       user_status: ["active", "inactive", "suspended"],
     },
