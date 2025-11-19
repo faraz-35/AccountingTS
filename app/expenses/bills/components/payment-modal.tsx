@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useZodForm } from "@/(common)/hooks/use-zod-form";
+import { useZodForm } from "@/common/hooks/use-zod-form";
 import { payBillSchema } from "../../(common)/schemas";
-import { Button, Input } from "@/(common)/components/ui";
-import { Card, CardContent } from "@/(common)/components/ui";
+import { Button, Input } from "@/common/components/ui";
+import { Card, CardContent } from "@/common/components/ui";
 import { useAction } from "next-safe-action/hooks";
 import { recordBillPayment } from "../actions";
 

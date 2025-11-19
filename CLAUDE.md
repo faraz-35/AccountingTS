@@ -477,8 +477,8 @@ Global state is managed with Zustand in `app/(common)/store/`:
 Use the `useZodForm` hook for consistent form handling:
 
 ```typescript
-import { useZodForm } from '@/(common)/hooks/use-zod-form'
-import { mySchema } from '@/(common)/lib/schemas'
+import { useZodForm } from '@/common/hooks/use-zod-form'
+import { mySchema } from '@/common/lib/schemas'
 
 const form = useZodForm(mySchema, defaultValues)
 ```
@@ -499,7 +499,7 @@ Enhanced safe actions with authentication support in feature `actions/` director
 
 #### Public Actions
 ```typescript
-import { publicAction } from '@/(common)/lib/safe-action'
+import { publicAction } from '@/common/lib/safe-action'
 
 export const publicAction = publicAction(mySchema, async (data) => {
   // Public server-side logic with automatic validation
@@ -508,7 +508,7 @@ export const publicAction = publicAction(mySchema, async (data) => {
 
 #### Authenticated Actions
 ```typescript
-import { authAction } from '@/(common)/lib/safe-action'
+import { authAction } from '@/common/lib/safe-action'
 
 export const authenticatedAction = authAction(mySchema, async (data, ctx) => {
   const { supabase, authUser } = ctx
@@ -570,7 +570,7 @@ export function CreateUserForm() {
 
 ```typescript
 // In a Server Component
-import { createSupabaseServerClient } from '@/(common)/lib/supabase-server'
+import { createSupabaseServerClient } from '@/common/lib/supabase-server'
 
 export default async function DashboardPage() {
   const supabase = createSupabaseServerClient()
@@ -588,8 +588,8 @@ export default async function DashboardPage() {
 ```typescript
 // In a Client Component
 import { useQuery } from '@tanstack/react-query'
-import { authQuery } from '@/(common)/hooks/auth-query'
-import { QueryKeys } from '@/(common)/lib/query-keys'
+import { authQuery } from '@/common/hooks/auth-query'
+import { QueryKeys } from '@/common/lib/query-keys'
 
 export function useProfile() {
   return useQuery({
@@ -803,19 +803,19 @@ export function ProfileForm() {
 
 ```typescript
 // UI Components
-import { Button, Input } from '@/(common)/components/ui'
+import { Button, Input } from '@/common/components/ui'
 
 // Feature Components
 import { LoginForm } from './components/login-form'
 
 // Shared Hooks
-import { useZodForm } from '@/(common)/hooks/use-zod-form'
+import { useZodForm } from '@/common/hooks/use-zod-form'
 
 // Feature Hooks
 import { useAuth } from '@/auth/hooks/use-auth'
 
 // Utilities
-import { formatDate } from '@/(common)/utils/helpers'
+import { formatDate } from '@/common/utils/helpers'
 
 // Types
 import type { User } from '@/types/database'
@@ -856,7 +856,7 @@ export const paths = {
 
 ```typescript
 // Import paths
-import { paths } from '@/(common)/lib/paths'
+import { paths } from '@/common/lib/paths'
 
 // In components
 <Link href={paths.dashboard.root}>Dashboard</Link>
@@ -873,7 +873,7 @@ fetch(paths.api.dashboard, { method: 'POST' })
 
 #### **Rules**
 1. **No hardcoded strings**: Never use `"/dashboard"` directly
-2. **Import paths**: Always `import { paths } from '@/(common)/lib/paths'`
+2. **Import paths**: Always `import { paths } from '@/common/lib/paths'`
 3. **Type safety**: The `as const` assertion provides complete TypeScript inference
 4. **Consistency**: Follow nested object structure matching your app directory
 
@@ -936,12 +936,12 @@ The root layout follows the same export/import pattern as API routes to maintain
 
 ```typescript
 // app/layout.tsx (Next.js requirement - minimal proxy)
-export { default } from '@/(common)/layout'
+export { default } from '@/common/layout'
 
 // app/(common)/layout.tsx (all real layout logic)
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "@/(common)/styles/globals.css";
+import "@/common/styles/globals.css";
 
 const geistSans = Geist({...});
 const geistMono = Geist_Mono({...});

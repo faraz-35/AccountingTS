@@ -1,10 +1,10 @@
 "use client";
 
 import { useFieldArray } from "react-hook-form";
-import { useZodForm } from "@/(common)/hooks/use-zod-form";
+import { useZodForm } from "@/common/hooks/use-zod-form";
 import { invoiceSchema, type InvoiceFormValues } from "../../(common)/schemas";
-import { Button, Input } from "@/(common)/components/ui";
-import { Card, CardContent } from "@/(common)/components/ui";
+import { Button, Input } from "@/common/components/ui";
+import { Card, CardContent } from "@/common/components/ui";
 import { useAction } from "next-safe-action/hooks";
 import {
   saveInvoiceDraft,

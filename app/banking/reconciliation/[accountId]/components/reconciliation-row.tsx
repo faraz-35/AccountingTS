@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input, Card, CardContent } from "@/(common)/components/ui";
+import { Button, Input, Card, CardContent } from "@/common/components/ui";
 import { useAction } from "next-safe-action/hooks";
 import { matchTransaction, createAndMatchTransaction, findPotentialMatches } from "../actions/match";
 import { useState, useEffect } from "react";

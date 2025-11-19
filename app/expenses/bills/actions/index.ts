@@ -1,6 +1,6 @@
 "use server";
 
-import { authActionClient } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/common/lib/safe-action";
 import {
   billSchema,
   approveBillSchema,

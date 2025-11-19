@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { paths } from "@/(common)/lib/paths";
-import { Button } from "@/(common)/components/ui";
+import { paths } from "@/common/lib/paths";
+import { Button } from "@/common/components/ui";
 
 export default function AccountingLayout({
   children,

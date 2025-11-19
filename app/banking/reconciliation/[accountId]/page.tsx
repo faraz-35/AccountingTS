@@ -1,6 +1,6 @@
-import { createSupabaseServerClient } from "@/(common)/lib/supabase-server";
-import { Button } from "@/(common)/components/ui/button";
-import { Card, CardContent } from "@/(common)/components/ui/card";
+import { createSupabaseServerClient } from "@/common/lib/supabase-server";
+import { Button } from "@/common/components/ui/button";
+import { Card, CardContent } from "@/common/components/ui/card";
 import { ReconciliationRow } from "./components/reconciliation-row";
 import { UploadComponent } from "./components/upload-component";
 import Link from "next/link";

@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input } from "@/(common)/components/ui/input";
-import { Button } from "@/(common)/components/ui/button";
-import { Label } from "@/(common)/components/ui/label";
+import { Input } from "@/common/components/ui/input";
+import { Button } from "@/common/components/ui/button";
+import { Label } from "@/common/components/ui/label";
 
 interface DateRangeFilterProps {
   onFilterChange?: (startDate: string, endDate: string) => void;

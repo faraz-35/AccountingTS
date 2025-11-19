@@ -14,17 +14,17 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-} from "@/(common)/components/ui/dialog";
-import { Button } from "@/(common)/components/ui/button";
-import { Input } from "@/(common)/components/ui/input";
-import { Label } from "@/(common)/components/ui/label";
+} from "@/common/components/ui/dialog";
+import { Button } from "@/common/components/ui/button";
+import { Input } from "@/common/components/ui/input";
+import { Label } from "@/common/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/(common)/components/ui/select";
+} from "@/common/components/ui/select";
 
 import { createAccount } from "../actions";
 import { accountSchema } from "../../(common)/schemas";
@@ -57,10 +57,30 @@ export function AccountDialog({ children }: { children?: React.ReactNode }) {
     },
     onError: (error) => {
       console.error("Failed to create account:", error);
+      // Show more detailed error info
+      console.error("Error details:", {
+        message: error.message,
+        validationErrors: error.validationErrors,
+        serverError: error.serverError,
+        fetchError: error.fetchError,
+      });
     },
   });
 
   const onSubmit = (data: FormValues) => {
+    console.log("Submitting account data:", data);
+
+    // Basic client validation
+    if (!data.name.trim()) {
+      console.error("Account name is required");
+      return;
+    }
+
+    if (!data.type) {
+      console.error("Account type is required");
+      return;
+    }
+
     createAccountAction.execute(data);
   };
 
@@ -131,7 +151,7 @@ export function AccountDialog({ children }: { children?: React.ReactNode }) {
                 <SelectValue placeholder="Select parent account (optional)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                {/* Empty option for "None" - handled by SelectValue placeholder */}
                 {/* TODO: Fetch and display actual accounts here */}
                 {/* This would require fetching accounts data */}
               </SelectContent>

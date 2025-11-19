@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, CardContent } from "@/(common)/components/ui";
+import { Button, Card, CardContent } from "@/common/components/ui";
 import { useAction } from "next-safe-action/hooks";
 import { uploadBankStatement } from "../actions/upload";
 import { formatCurrency } from "@/accounting/(common)/utils";

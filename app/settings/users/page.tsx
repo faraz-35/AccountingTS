@@ -1,12 +1,12 @@
-import { createSupabaseServerClient } from "@/(common)/lib/supabase-server";
-import { Button } from "@/(common)/components/ui";
+import { createSupabaseServerClient } from "@/common/lib/supabase-server";
+import { Button } from "@/common/components/ui";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/(common)/components/ui";
-import { Badge } from "@/(common)/components/ui/badge";
+} from "@/common/components/ui";
+import { Badge } from "@/common/components/ui/badge";
 import { UserInviteDialog } from "./components/user-invite-dialog";
 import { UserPlus, Shield, Users } from "lucide-react";
 

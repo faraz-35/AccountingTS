@@ -1,4 +1,4 @@
-import type { Tables } from "@/(common)/types/supabase";
+import type { Tables } from "@/common/types/supabase";
 
 // Re-export Database tables with cleaner names for use within the feature
 export type Vendor = Tables<"vendors">;

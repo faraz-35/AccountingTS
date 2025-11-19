@@ -14,10 +14,10 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-} from "@/(common)/components/ui/dialog";
-import { Button } from "@/(common)/components/ui/button";
-import { Input } from "@/(common)/components/ui/input";
-import { Label } from "@/(common)/components/ui/label";
+} from "@/common/components/ui/dialog";
+import { Button } from "@/common/components/ui/button";
+import { Input } from "@/common/components/ui/input";
+import { Label } from "@/common/components/ui/label";
 
 import { upsertVendor } from "../actions";
 import { vendorSchema } from "../../(common)/schemas";

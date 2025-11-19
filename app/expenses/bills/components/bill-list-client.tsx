@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/(common)/components/ui";
+import { Button } from "@/common/components/ui";
 import { PaymentModal } from "./payment-modal";
 import Link from "next/link";
 import {

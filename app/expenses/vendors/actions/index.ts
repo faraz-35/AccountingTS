@@ -1,6 +1,6 @@
 "use server";
 
-import { authActionClient } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/common/lib/safe-action";
 import { vendorSchema } from "../../(common)/schemas";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";

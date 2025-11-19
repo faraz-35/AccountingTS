@@ -1,7 +1,7 @@
-import { createSupabaseServerClient } from "@/(common)/lib/supabase-server";
+import { createSupabaseServerClient } from "@/common/lib/supabase-server";
 import { InvoiceForm } from "./components/invoice-form";
-import { Button } from "@/(common)/components/ui";
-import { Card, CardContent } from "@/(common)/components/ui";
+import { Button } from "@/common/components/ui";
+import { Card, CardContent } from "@/common/components/ui";
 import { invoiceStatusLabels, getInvoiceStatusColor } from "../(common)/types";
 import { formatCurrency } from "@/accounting/(common)/utils";
 import Link from "next/link";

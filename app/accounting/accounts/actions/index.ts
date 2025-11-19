@@ -1,9 +1,9 @@
 "use server";
 
-import { authActionClient } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/common/lib/safe-action";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { paths } from "@/(common)/lib/paths";
+import { paths } from "@/common/lib/paths";
 
 const createAccountSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),

@@ -1,20 +1,20 @@
 "use client";
 
 import { useFieldArray } from "react-hook-form";
-import { useZodForm } from "@/(common)/hooks/use-zod-form";
+import { useZodForm } from "@/common/hooks/use-zod-form";
 import {
   journalEntrySchema,
   type JournalEntryFormValues,
 } from "../../(common)/schemas";
-import { Button, Input } from "@/(common)/components/ui";
-import { Card, CardContent } from "@/(common)/components/ui";
+import { Button, Input } from "@/common/components/ui";
+import { Card, CardContent } from "@/common/components/ui";
 import { useAction } from "next-safe-action/hooks";
 import { postJournalEntry } from "../actions";
 import { Account } from "../../(common)/types";
 import { JournalStatus } from "../../(common)/types";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { paths } from "@/(common)/lib/paths";
+import { paths } from "@/common/lib/paths";
 
 interface Props {
   accounts: Account[];

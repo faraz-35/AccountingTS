@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { paths } from "@/(common)/lib/paths";
+import { paths } from "@/common/lib/paths";
 
 export default function HomePage() {
   return (

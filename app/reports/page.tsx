@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/(common)/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/common/components/ui/card";
 import {
   TrendingUp,
   Scale,
@@ -7,7 +7,7 @@ import {
   DollarSign,
   ArrowRight
 } from "lucide-react";
-import { Button } from "@/(common)/components/ui/button";
+import { Button } from "@/common/components/ui/button";
 
 export default function ReportsDashboard() {
   const reports = [

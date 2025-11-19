@@ -57,7 +57,7 @@ app/
 │       └── route.ts       # export * from '@/feature/api/route'
 │
 └── layout.tsx             # Root layout proxy
-                           # export { default } from '@/(common)/layout'
+                           # export { default } from '@/common/layout'
 ```
 
 ---
@@ -82,7 +82,7 @@ export const paths = {
 } as const
 
 // Usage
-import { paths } from '@/(common)/lib/paths'
+import { paths } from '@/common/lib/paths'
 <Link href={paths.dashboard.settings}>Settings</Link>
 ```
 
@@ -194,7 +194,7 @@ export type CreateUserInput = z.infer<typeof userSchemas.create>
 
 ### Form Handling
 ```typescript
-import { useZodForm } from '@/(common)/hooks/use-zod-form'
+import { useZodForm } from '@/common/hooks/use-zod-form'
 const form = useZodForm(mySchema, defaultValues)
 ```
 
@@ -243,22 +243,22 @@ pnpm type-check
 
 ```typescript
 // UI Components
-import { Button, Input } from '@/(common)/components/ui'
+import { Button, Input } from '@/common/components/ui'
 
 // Feature Components (relative)
 import { LoginForm } from './components/login-form'
 
 // Shared Hooks
-import { useZodForm } from '@/(common)/hooks/use-zod-form'
+import { useZodForm } from '@/common/hooks/use-zod-form'
 
 // Feature Hooks (absolute from feature root)
 import { useAuth } from '@/auth/hooks/use-auth'
 
 // Utilities
-import { formatDate } from '@/(common)/utils/helpers'
+import { formatDate } from '@/common/utils/helpers'
 
 // Types
-import type { User } from '@/(common)/types/database'
+import type { User } from '@/common/types/database'
 ```
 
 ---

@@ -1,4 +1,4 @@
-import { createSupabaseClient } from "@/(common)/lib/supabase-client";
+import { createSupabaseClient } from "@/common/lib/supabase-client";
 import type { User } from "@supabase/supabase-js";
 import { z } from "zod";
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { authActionClient } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/common/lib/safe-action";
 import { invoiceSchema, finalizeInvoiceSchema } from "../../(common)/schemas";
 import { revalidatePath } from "next/cache";
 import { generateInvoiceNumber } from "../../(common)/utils";

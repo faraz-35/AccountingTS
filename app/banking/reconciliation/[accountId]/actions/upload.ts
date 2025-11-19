@@ -1,6 +1,6 @@
 "use server";
 
-import { authActionClient } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/common/lib/safe-action";
 import { uploadSchema } from "../../../(common)/schemas";
 import Papa from "papaparse";
 import { revalidatePath } from "next/cache";

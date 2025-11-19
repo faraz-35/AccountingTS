@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { paths } from "@/(common)/lib/paths";
-import { Button } from "@/(common)/components/ui";
+import { paths } from "@/common/lib/paths";
+import { Button } from "@/common/components/ui";
 
 export default function ExpensesLayout({
   children,
@@ -14,7 +14,10 @@ export default function ExpensesLayout({
         <div className="container mx-auto px-4">
           <div className="flex justify-between h-16">
             <div className="flex items-center gap-8">
-              <Link href={paths.dashboard.root} className="text-xl font-bold text-indigo-600">
+              <Link
+                href={paths.dashboard.root}
+                className="text-xl font-bold text-indigo-600"
+              >
                 Acme Corp
               </Link>
 
@@ -50,9 +53,7 @@ export default function ExpensesLayout({
         </div>
       </nav>
 
-      <main className="container mx-auto px-4 py-8">
-        {children}
-      </main>
+      <main className="container mx-auto px-4 py-8">{children}</main>
     </div>
   );
 }

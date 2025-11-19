@@ -1,6 +1,6 @@
-import { createSupabaseServerClient } from "@/(common)/lib/supabase-server";
-import { Button } from "@/(common)/components/ui";
-import { Card, CardContent } from "@/(common)/components/ui";
+import { createSupabaseServerClient } from "@/common/lib/supabase-server";
+import { Button } from "@/common/components/ui";
+import { Card, CardContent } from "@/common/components/ui";
 import {
   hasOutstandingBills,
   calculateOutstandingAmount,

@@ -1,6 +1,6 @@
-import { createSupabaseServerClient } from "@/(common)/lib/supabase-server";
+import { createSupabaseServerClient } from "@/common/lib/supabase-server";
 import { BillForm } from "./components/bill-form";
-import { Button } from "@/(common)/components/ui";
+import { Button } from "@/common/components/ui";
 import Link from "next/link";
 import BillListClient from "./components/bill-list-client";
 

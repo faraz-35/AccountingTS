@@ -1,8 +1,8 @@
-import { createSupabaseServerClient } from "@/(common)/lib/supabase-server";
+import { createSupabaseServerClient } from "@/common/lib/supabase-server";
 import { JournalEntryForm } from "./components/journal-entry-form";
-import { Button } from "@/(common)/components/ui";
-import { Card, CardContent } from "@/(common)/components/ui";
-import { paths } from "@/(common)/lib/paths";
+import { Button } from "@/common/components/ui";
+import { Card, CardContent } from "@/common/components/ui";
+import { paths } from "@/common/lib/paths";
 import Link from "next/link";
 
 export default async function JournalPage() {

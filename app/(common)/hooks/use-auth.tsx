@@ -8,15 +8,15 @@ import {
   ReactNode,
 } from "react";
 import { User, Session } from "@supabase/supabase-js";
-import { createSupabaseClient } from "@/(common)/lib/supabase-client";
+import { createSupabaseClient } from "@/common/lib/supabase-client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { UserQueryKeys } from "@/(common)/lib/query-keys";
+import { UserQueryKeys } from "@/common/lib/query-keys";
 import { getCurrentUserQuery } from "./auth-query";
 import type {
   UserProfile,
   UserSettings,
   AuthContextValue,
-} from "@/(common)/types/global";
+} from "@/common/types/global";
 
 /**
  * Authentication context for managing user state

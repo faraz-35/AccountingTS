@@ -14,17 +14,17 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-} from "@/(common)/components/ui/dialog";
-import { Button } from "@/(common)/components/ui/button";
-import { Input } from "@/(common)/components/ui/input";
-import { Label } from "@/(common)/components/ui/label";
+} from "@/common/components/ui/dialog";
+import { Button } from "@/common/components/ui/button";
+import { Input } from "@/common/components/ui/input";
+import { Label } from "@/common/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/(common)/components/ui/select";
+} from "@/common/components/ui/select";
 
 import { inviteUser } from "../actions";
 

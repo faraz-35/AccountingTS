@@ -1,9 +1,9 @@
 "use server";
 
-import { authActionClient } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/common/lib/safe-action";
 import { journalEntrySchema } from "../../(common)/schemas";
 import { revalidatePath } from "next/cache";
-import { paths } from "@/(common)/lib/paths";
+import { paths } from "@/common/lib/paths";
 
 export const postJournalEntry = authActionClient
   .schema(journalEntrySchema)
