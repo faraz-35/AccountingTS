@@ -15,6 +15,10 @@ export const paths = {
     journal: "/accounting/journal",
     reports: "/accounting/reports",
   },
+  sales: {
+    invoices: "/sales/invoices",
+    customers: "/sales/customers",
+  },
   api: {
     auth: "/api/auth",
     dashboard: "/api/dashboard",
