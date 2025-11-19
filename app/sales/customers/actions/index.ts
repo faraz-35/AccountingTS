@@ -1,11 +1,11 @@
 "use server";
 
 import { z } from "zod";
-import { authAction } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/(common)/lib/safe-action";
 import { customerSchema } from "../../(common)/schemas";
 import { revalidatePath } from "next/cache";
 
-export const upsertCustomer = authAction(
+export const upsertCustomer = authActionClient(
   customerSchema,
   async (data, { supabase, authUser }) => {
     // Get user's organization
@@ -34,7 +34,7 @@ export const upsertCustomer = authAction(
   },
 );
 
-export const deleteCustomer = authAction(
+export const deleteCustomer = authActionClient(
   z.object({ id: z.string().uuid() }),
   async (data, { supabase, authUser }) => {
     // Get user's organization

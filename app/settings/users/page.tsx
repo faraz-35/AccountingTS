@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/(common)/components/ui";
-import { Badge } from "@/(common)/components/ui";
+import { Badge } from "@/(common)/components/ui/badge";
 import { UserInviteDialog } from "./components/user-invite-dialog";
 import { UserPlus, Shield, Users } from "lucide-react";
 

@@ -1,26 +1,17 @@
-"use client";
+import React from "react";
 
-import { Button } from "@/(common)/components/ui/button";
-import { Download, Calendar } from "lucide-react";
-
-interface Props {
-  onPrint?: () => void;
-  onExport?: () => void;
-  children?: React.ReactNode;
+interface ReportActionsProps {
+  children: React.ReactNode;
+  className?: string;
 }
 
-export function ReportActions({ onPrint, onExport, children }: Props) {
+export function ReportActions({
+  children,
+  className = "",
+}: ReportActionsProps) {
   return (
-    <div className="flex gap-2 items-center print:hidden">
+    <div className={`flex items-center justify-between mb-4 ${className}`}>
       {children}
-      <Button variant="outline" onClick={onPrint}>
-        <Calendar className="w-4 h-4 mr-2" />
-        Print / PDF
-      </Button>
-      <Button variant="outline" onClick={onExport}>
-        <Download className="w-4 h-4 mr-2" />
-        Export
-      </Button>
     </div>
   );
 }

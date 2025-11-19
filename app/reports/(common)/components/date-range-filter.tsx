@@ -1,38 +1,53 @@
 "use client";
 
+import React, { useState } from "react";
 import { Input } from "@/(common)/components/ui/input";
+import { Button } from "@/(common)/components/ui/button";
 import { Label } from "@/(common)/components/ui/label";
 
-interface Props {
-  startDate?: string;
-  endDate?: string;
-  endDateMin?: string;
+interface DateRangeFilterProps {
+  onFilterChange?: (startDate: string, endDate: string) => void;
+  className?: string;
 }
 
-export function DateRangeFilter({ startDate, endDate, endDateMin }: Props) {
+export function DateRangeFilter({
+  onFilterChange,
+  className = "",
+}: DateRangeFilterProps) {
+  const [startDate, setStartDate] = useState(
+    new Date(new Date().getFullYear(), 0, 1).toISOString().split("T")[0],
+  );
+  const [endDate, setEndDate] = useState(
+    new Date().toISOString().split("T")[0],
+  );
+
+  const handleFilter = () => {
+    onFilterChange?.(startDate, endDate);
+  };
+
   return (
-    <>
-      <div>
-        <Label htmlFor="start" className="text-xs font-bold">Start Date</Label>
+    <div className={`flex items-end space-x-4 ${className}`}>
+      <div className="space-y-2">
+        <Label htmlFor="start-date">Start Date</Label>
         <Input
+          id="start-date"
           type="date"
-          id="start"
-          name="start"
-          defaultValue={startDate}
-          required
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
         />
       </div>
-      <div>
-        <Label htmlFor="end" className="text-xs font-bold">End Date</Label>
+
+      <div className="space-y-2">
+        <Label htmlFor="end-date">End Date</Label>
         <Input
+          id="end-date"
           type="date"
-          id="end"
-          name="end"
-          defaultValue={endDate}
-          min={endDateMin}
-          required
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
         />
       </div>
-    </>
+
+      <Button onClick={handleFilter}>Apply Filter</Button>
+    </div>
   );
 }

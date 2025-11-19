@@ -1,11 +1,11 @@
 "use server";
 
-import { authAction } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/(common)/lib/safe-action";
 import { vendorSchema } from "../../(common)/schemas";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const upsertVendor = authAction(
+export const upsertVendor = authActionClient(
   vendorSchema,
   async (data, { supabase, authUser }) => {
     // Get user's organization
@@ -33,7 +33,7 @@ export const upsertVendor = authAction(
   },
 );
 
-export const deleteVendor = authAction(
+export const deleteVendor = authActionClient(
   z.object({ id: z.string().uuid() }),
   async (data, { supabase, authUser }) => {
     // Get user's organization
