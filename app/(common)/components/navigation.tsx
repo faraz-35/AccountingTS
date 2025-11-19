@@ -16,11 +16,12 @@ import {
   Menu,
 } from "lucide-react";
 import { useState } from "react";
+import { paths } from "@/(common)/lib/paths";
 
 const navigationItems = [
   {
     title: "Dashboard",
-    href: "/dashboard",
+    href: paths.dashboard.root,
     icon: Home,
   },
   {
@@ -28,12 +29,12 @@ const navigationItems = [
     items: [
       {
         title: "Chart of Accounts",
-        href: "/accounting/accounts",
+        href: paths.accounting.accounts,
         icon: Building2,
       },
       {
         title: "Journal Entries",
-        href: "/accounting/journal",
+        href: paths.accounting.journal,
         icon: FileText,
       },
     ],
@@ -44,12 +45,12 @@ const navigationItems = [
     items: [
       {
         title: "Customers",
-        href: "/sales/customers",
+        href: paths.sales.customers,
         icon: Users,
       },
       {
         title: "Invoices",
-        href: "/sales/invoices",
+        href: paths.sales.invoices,
         icon: FileText,
       },
     ],
@@ -60,12 +61,12 @@ const navigationItems = [
     items: [
       {
         title: "Vendors",
-        href: "/expenses/vendors",
+        href: paths.expenses.vendors,
         icon: Users,
       },
       {
         title: "Bills",
-        href: "/expenses/bills",
+        href: paths.expenses.bills,
         icon: Receipt,
       },
     ],
@@ -76,17 +77,17 @@ const navigationItems = [
     items: [
       {
         title: "Trial Balance",
-        href: "/reports/financial/trial-balance",
+        href: paths.accounting.reports.trialBalance,
         icon: TrendingUp,
       },
       {
         title: "Profit & Loss",
-        href: "/reports/financial/profit-loss",
+        href: paths.accounting.reports.profitLoss,
         icon: TrendingUp,
       },
       {
         title: "Balance Sheet",
-        href: "/reports/financial/balance-sheet",
+        href: paths.accounting.reports.balanceSheet,
         icon: TrendingUp,
       },
     ],
@@ -97,7 +98,7 @@ const navigationItems = [
     items: [
       {
         title: "Users",
-        href: "/settings/users",
+        href: paths.settings.users,
         icon: Users,
       },
     ],
@@ -111,7 +112,9 @@ interface NavigationProps {
 
 export function Navigation({ className }: NavigationProps) {
   const pathname = usePathname();
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(
+    new Set(),
+  );
 
   const toggleSection = (title: string) => {
     setExpandedSections((prev) => {
@@ -147,7 +150,7 @@ export function Navigation({ className }: NavigationProps) {
                 variant={isActive(item.href) ? "default" : "ghost"}
                 className={cn(
                   "w-full justify-start",
-                  isActive(item.href) && "bg-primary text-primary-foreground"
+                  isActive(item.href) && "bg-primary text-primary-foreground",
                 )}
               >
                 <Icon className="mr-2 h-4 w-4" />
@@ -166,7 +169,7 @@ export function Navigation({ className }: NavigationProps) {
               variant={sectionActive ? "default" : "ghost"}
               className={cn(
                 "w-full justify-start",
-                sectionActive && "bg-primary text-primary-foreground"
+                sectionActive && "bg-primary text-primary-foreground",
               )}
               onClick={() => toggleSection(item.title)}
             >
@@ -184,7 +187,8 @@ export function Navigation({ className }: NavigationProps) {
                         size="sm"
                         className={cn(
                           "w-full justify-start",
-                          isActive(subItem.href) && "bg-primary text-primary-foreground"
+                          isActive(subItem.href) &&
+                            "bg-primary text-primary-foreground",
                         )}
                       >
                         <SubIcon className="mr-2 h-3 w-3" />
@@ -210,7 +214,9 @@ export function Sidebar({ className }: SidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className={cn("flex flex-col h-full bg-background border-r", className)}>
+    <div
+      className={cn("flex flex-col h-full bg-background border-r", className)}
+    >
       {/* Mobile menu button */}
       <div className="lg:hidden p-4 border-b">
         <Button
@@ -229,11 +235,13 @@ export function Sidebar({ className }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <div className={cn(
-        "flex-1 overflow-auto p-4",
-        "lg:block",
-        isMobileMenuOpen ? "block" : "hidden"
-      )}>
+      <div
+        className={cn(
+          "flex-1 overflow-auto p-4",
+          "lg:block",
+          isMobileMenuOpen ? "block" : "hidden",
+        )}
+      >
         <Navigation />
       </div>
     </div>

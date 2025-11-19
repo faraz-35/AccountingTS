@@ -5,7 +5,7 @@ export const paths = {
     register: "/auth/register",
   },
   dashboard: {
-    root: "/dashboard",
+    root: "/",
     settings: "/dashboard/settings",
   },
   accounting: {

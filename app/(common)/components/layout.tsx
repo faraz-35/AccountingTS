@@ -22,11 +22,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
 
           {/* Page Content */}
-          <main className="p-6 lg:p-8">
-            {children}
-          </main>
+          <main className="p-6 lg:p-8">{children}</main>
         </div>
       </div>
     </div>
   );
 }
+
+// Default export for Next.js layout components
+export default DashboardLayout;
