@@ -221,6 +221,54 @@ export type Database = {
           },
         ]
       }
+      bill_lines: {
+        Row: {
+          account_id: string | null
+          amount: number | null
+          bill_id: string
+          created_at: string | null
+          description: string
+          id: string
+          quantity: number | null
+          unit_price: number | null
+        }
+        Insert: {
+          account_id?: string | null
+          amount?: number | null
+          bill_id: string
+          created_at?: string | null
+          description: string
+          id?: string
+          quantity?: number | null
+          unit_price?: number | null
+        }
+        Update: {
+          account_id?: string | null
+          amount?: number | null
+          bill_id?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          quantity?: number | null
+          unit_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bill_lines_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bill_lines_bill_id_fkey"
+            columns: ["bill_id"]
+            isOneToOne: false
+            referencedRelation: "bills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bills: {
         Row: {
           bill_number: string
@@ -802,7 +850,35 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      approve_bill: {
+        Args: { p_ap_account_id: string; p_bill_id: string; p_date: string }
+        Returns: string
+      }
+      approve_invoice: {
+        Args: { p_ar_account_id: string; p_date: string; p_invoice_id: string }
+        Returns: string
+      }
+      pay_bill: {
+        Args: {
+          p_amount: number
+          p_bill_id: string
+          p_date: string
+          p_payment_account_id: string
+          p_ref_number?: string
+        }
+        Returns: string
+      }
+      post_journal_entry: {
+        Args: {
+          p_date: string
+          p_description: string
+          p_lines: Json
+          p_reference_id: string
+          p_reference_type: string
+          p_status: Database["public"]["Enums"]["journal_status"]
+        }
+        Returns: string
+      }
     }
     Enums: {
       account_type: "ASSET" | "LIABILITY" | "EQUITY" | "REVENUE" | "EXPENSE"

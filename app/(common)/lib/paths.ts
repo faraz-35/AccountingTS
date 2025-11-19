@@ -19,6 +19,10 @@ export const paths = {
     invoices: "/sales/invoices",
     customers: "/sales/customers",
   },
+  expenses: {
+    bills: "/expenses/bills",
+    vendors: "/expenses/vendors",
+  },
   api: {
     auth: "/api/auth",
     dashboard: "/api/dashboard",
