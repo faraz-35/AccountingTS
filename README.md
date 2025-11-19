@@ -1,4 +1,4 @@
-# Next.js Production Starter Template
+# Next.js Acounting Software
 
 A modern, production-ready Next.js starter template built with the latest technologies and following AI agent-first architecture principles.
 
