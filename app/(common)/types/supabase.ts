@@ -946,6 +946,27 @@ export type Database = {
           net_amount: number
         }[]
       }
+      get_trial_balance: {
+        Args: { p_as_of_date?: string; p_organization_id: string }
+        Returns: {
+          account_code: string
+          account_id: string
+          account_name: string
+          account_type: string
+          net_balance: number
+          total_credit: number
+          total_debit: number
+        }[]
+      }
+      get_trial_balance_summary: {
+        Args: { p_as_of_date?: string; p_organization_id: string }
+        Returns: {
+          difference: number
+          is_balanced: boolean
+          total_credits: number
+          total_debits: number
+        }[]
+      }
       pay_bill: {
         Args: {
           p_amount: number

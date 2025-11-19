@@ -1,10 +1,10 @@
-import { createSupabaseServerClient } from "@/common/lib/supabase-server";
-import { ReportTable } from "../../../(common)/components/report-table";
-import { ReportActions } from "../../../(common)/components/report-actions";
-import { Button } from "@/common/components/ui/button";
-import { Input } from "@/common/components/ui/input";
-import { Label } from "@/common/components/ui/label";
-import { BalanceSheetRow } from "../../../(common)/types";
+import { createSupabaseServerClient } from "@/(common)/lib/supabase-server";
+import { ReportTable } from "../../(common)/components/report-table";
+import { ReportActions } from "../../(common)/components/report-actions";
+import { Button } from "@/(common)/components/ui/button";
+import { Input } from "@/(common)/components/ui/input";
+import { Label } from "@/(common)/components/ui/label";
+import { BalanceSheetRow } from "../../(common)/types";
 
 export default async function BalanceSheetPage({
   searchParams,

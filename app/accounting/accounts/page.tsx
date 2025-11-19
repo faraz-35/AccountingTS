@@ -8,7 +8,6 @@ import {
 import Link from "next/link";
 import { paths } from "@/common/lib/paths";
 import { AccountDialog } from "./components/account-dialog";
-import { DebugAccount } from "./components/debug-account";
 
 export default async function AccountsPage() {
   const supabase = await createSupabaseServerClient();
@@ -83,8 +82,6 @@ export default async function AccountsPage() {
       </div>
 
       {/* Accounts Table */}
-      <DebugAccount />
-
       <Card>
         <CardContent className="p-0">
           <div className="overflow-x-auto">

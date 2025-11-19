@@ -21,11 +21,29 @@ export default async function TrialBalancePage({
   const asOfDate = searchParams?.date || new Date().toISOString().split("T")[0];
 
   try {
+    // Get user's organization first
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+    const { data: orgMember } = await supabase
+      .from("organization_members")
+      .select("organization_id")
+      .eq("user_id", user.id)
+      .single();
+
+    if (!orgMember) {
+      throw new Error("Organization not found");
+    }
+
     // Get trial balance data
     const { data: trialBalance, error: tbError } = await supabase.rpc(
       "get_trial_balance",
       {
-        p_organization_id: null, // Will be filtered by RLS
+        p_organization_id: orgMember.organization_id,
         p_as_of_date: asOfDate,
       },
     );
@@ -34,7 +52,7 @@ export default async function TrialBalancePage({
     const { data: summary, error: summaryError } = await supabase.rpc(
       "get_trial_balance_summary",
       {
-        p_organization_id: null, // Will be filtered by RLS
+        p_organization_id: orgMember.organization_id,
         p_as_of_date: asOfDate,
       },
     );
