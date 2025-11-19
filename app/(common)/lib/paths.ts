@@ -8,12 +8,16 @@ export const paths = {
     root: "/dashboard",
     settings: "/dashboard/settings",
   },
-  // ADD THIS SECTION
   accounting: {
     root: "/accounting",
     accounts: "/accounting/accounts",
     journal: "/accounting/journal",
-    reports: "/accounting/reports",
+    reports: {
+      root: "/reports",
+      trialBalance: "/reports/financial/trial-balance",
+      profitLoss: "/reports/financial/profit-loss",
+      balanceSheet: "/reports/financial/balance-sheet",
+    },
   },
   sales: {
     invoices: "/sales/invoices",
@@ -23,9 +27,12 @@ export const paths = {
     bills: "/expenses/bills",
     vendors: "/expenses/vendors",
   },
+  settings: {
+    users: "/settings/users",
+  },
   api: {
     auth: "/api/auth",
     dashboard: "/api/dashboard",
-    accounting: "/api/accounting", // Proxy if needed
+    accounting: "/api/accounting",
   },
 } as const;

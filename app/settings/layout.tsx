@@ -1,6 +1,6 @@
 import { DashboardLayout } from "@/(common)/components/layout";
 
-export default function AccountingLayout({
+export default function SettingsLayout({
   children,
 }: {
   children: React.ReactNode;
