@@ -1,9 +1,13 @@
 import { createSupabaseServerClient } from "@/(common)/lib/supabase-server";
 import { Button } from "@/(common)/components/ui";
 import { Card, CardContent } from "@/(common)/components/ui";
-import { hasOutstandingBills, calculateOutstandingAmount } from "../(common)/utils";
+import {
+  hasOutstandingBills,
+  calculateOutstandingAmount,
+} from "../(common)/utils";
 import { formatCurrency } from "@/accounting/(common)/utils";
 import Link from "next/link";
+import { VendorDialog } from "./components/vendor-dialog";
 
 export default async function VendorsPage() {
   const supabase = await createSupabaseServerClient();
@@ -11,23 +15,26 @@ export default async function VendorsPage() {
   // Fetch vendors with bill counts
   const { data: vendors } = await supabase
     .from("vendors")
-    .select(`
+    .select(
+      `
       *,
       bills (
         id,
         status,
         total_amount
       )
-    `)
+    `,
+    )
     .order("name", { ascending: true });
 
   // Calculate additional vendor data
-  const vendorsWithStats = vendors?.map(vendor => ({
-    ...vendor,
-    bill_count: vendor.bills?.length || 0,
-    total_outstanding: calculateOutstandingAmount(vendor.bills || []),
-    has_outstanding: hasOutstandingBills(vendor.bills || []),
-  })) || [];
+  const vendorsWithStats =
+    vendors?.map((vendor) => ({
+      ...vendor,
+      bill_count: vendor.bills?.length || 0,
+      total_outstanding: calculateOutstandingAmount(vendor.bills || []),
+      has_outstanding: hasOutstandingBills(vendor.bills || []),
+    })) || [];
 
   return (
     <div className="space-y-6">
@@ -36,7 +43,7 @@ export default async function VendorsPage() {
           <h1 className="text-2xl font-bold">Vendors</h1>
           <p className="text-gray-600 mt-1">Manage your vendor relationships</p>
         </div>
-        <Button>New Vendor</Button> {/* Will implement vendor form modal in next iteration */}
+        <VendorDialog />
       </div>
 
       {/* Summary Cards */}
@@ -50,7 +57,7 @@ export default async function VendorsPage() {
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold">
-              {vendorsWithStats.filter(v => v.has_outstanding).length}
+              {vendorsWithStats.filter((v) => v.has_outstanding).length}
             </div>
             <div className="text-sm text-gray-500">With Outstanding Bills</div>
           </CardContent>
@@ -59,7 +66,10 @@ export default async function VendorsPage() {
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-orange-600">
               {formatCurrency(
-                vendorsWithStats.reduce((sum, v) => sum + (v.total_outstanding || 0), 0)
+                vendorsWithStats.reduce(
+                  (sum, v) => sum + (v.total_outstanding || 0),
+                  0,
+                ),
               )}
             </div>
             <div className="text-sm text-gray-500">Total Outstanding</div>
@@ -102,7 +112,9 @@ export default async function VendorsPage() {
                         {vendor.name}
                       </div>
                       {vendor.address && (
-                        <div className="text-sm text-gray-500">{vendor.address}</div>
+                        <div className="text-sm text-gray-500">
+                          {vendor.address}
+                        </div>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -119,7 +131,9 @@ export default async function VendorsPage() {
                         {formatCurrency(vendor.total_outstanding || 0)}
                       </div>
                       {vendor.has_outstanding && (
-                        <span className="text-xs text-orange-600">Outstanding</span>
+                        <span className="text-xs text-orange-600">
+                          Outstanding
+                        </span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

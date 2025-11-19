@@ -39,20 +39,25 @@ export function calculateLineTotal(
 }
 
 /**
- * Calculate invoice totals including subtotal and total
+ * Calculate invoice totals including subtotal, tax, and total
  */
 export function calculateInvoiceTotals(
   lines: InvoiceLine[] | Array<{ quantity: number; unit_price: number }>,
+  taxRate: number = 0,
 ) {
   const subtotal = lines.reduce(
     (sum, line) => sum + calculateLineTotal(line),
     0,
   );
 
+  const taxAmount = subtotal * (taxRate / 100);
+  const total = subtotal + taxAmount;
+
   return {
     subtotal,
-    tax: 0, // Will implement tax in future version
-    total: subtotal,
+    tax: taxAmount,
+    total,
+    taxRate,
     lineCount: lines.length,
   };
 }

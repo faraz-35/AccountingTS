@@ -7,6 +7,7 @@ import {
 } from "@/accounting/(common)/utils";
 import Link from "next/link";
 import { paths } from "@/(common)/lib/paths";
+import { AccountDialog } from "./components/account-dialog";
 
 export default async function AccountsPage() {
   const supabase = await createSupabaseServerClient();
@@ -47,8 +48,7 @@ export default async function AccountsPage() {
             Manage your organization's accounts
           </p>
         </div>
-        {/* New Account button will be added in next iteration */}
-        <Button>New Account</Button>
+        <AccountDialog />
       </div>
 
       {/* Summary Cards */}

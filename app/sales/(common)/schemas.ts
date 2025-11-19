@@ -37,6 +37,7 @@ export const invoiceSchema = z
     due_date: z
       .string()
       .refine((val) => !isNaN(Date.parse(val)), "Invalid due date"),
+    tax_rate: z.coerce.number().min(0).max(100).default(0),
     notes: z.string().optional(),
     lines: z.array(invoiceLineSchema).min(1, "Add at least one line item"),
   })

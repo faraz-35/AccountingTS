@@ -1,9 +1,13 @@
 import { createSupabaseServerClient } from "@/(common)/lib/supabase-server";
 import { Button } from "@/(common)/components/ui";
 import { Card, CardContent } from "@/(common)/components/ui";
-import { hasOutstandingInvoices, calculateOutstandingAmount } from "../(common)/utils";
+import {
+  hasOutstandingInvoices,
+  calculateOutstandingAmount,
+} from "../(common)/utils";
 import { formatCurrency } from "@/accounting/(common)/utils";
 import Link from "next/link";
+import { CustomerDialog } from "./components/customer-dialog";
 
 export default async function CustomersPage() {
   const supabase = await createSupabaseServerClient();
@@ -11,23 +15,26 @@ export default async function CustomersPage() {
   // Fetch customers with invoice counts
   const { data: customers } = await supabase
     .from("customers")
-    .select(`
+    .select(
+      `
       *,
       invoices (
         id,
         status,
         total_amount
       )
-    `)
+    `,
+    )
     .order("name", { ascending: true });
 
   // Calculate additional customer data
-  const customersWithStats = customers?.map(customer => ({
-    ...customer,
-    invoice_count: customer.invoices?.length || 0,
-    total_outstanding: calculateOutstandingAmount(customer.invoices || []),
-    has_outstanding: hasOutstandingInvoices(customer.invoices || []),
-  })) || [];
+  const customersWithStats =
+    customers?.map((customer) => ({
+      ...customer,
+      invoice_count: customer.invoices?.length || 0,
+      total_outstanding: calculateOutstandingAmount(customer.invoices || []),
+      has_outstanding: hasOutstandingInvoices(customer.invoices || []),
+    })) || [];
 
   return (
     <div className="space-y-6">
@@ -36,30 +43,37 @@ export default async function CustomersPage() {
           <h1 className="text-2xl font-bold">Customers</h1>
           <p className="text-gray-600 mt-1">Manage your customer database</p>
         </div>
-        <Button>New Customer</Button> {/* Will implement customer form modal in next iteration */}
+        <CustomerDialog />
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardContent className="p-4">
-            <div className="text-2xl font-bold">{customersWithStats.length}</div>
+            <div className="text-2xl font-bold">
+              {customersWithStats.length}
+            </div>
             <div className="text-sm text-gray-500">Total Customers</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold">
-              {customersWithStats.filter(c => c.has_outstanding).length}
+              {customersWithStats.filter((c) => c.has_outstanding).length}
             </div>
-            <div className="text-sm text-gray-500">With Outstanding Invoices</div>
+            <div className="text-sm text-gray-500">
+              With Outstanding Invoices
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-red-600">
               {formatCurrency(
-                customersWithStats.reduce((sum, c) => sum + (c.total_outstanding || 0), 0)
+                customersWithStats.reduce(
+                  (sum, c) => sum + (c.total_outstanding || 0),
+                  0,
+                ),
               )}
             </div>
             <div className="text-sm text-gray-500">Total Outstanding</div>
@@ -102,7 +116,9 @@ export default async function CustomersPage() {
                         {customer.name}
                       </div>
                       {customer.address && (
-                        <div className="text-sm text-gray-500">{customer.address}</div>
+                        <div className="text-sm text-gray-500">
+                          {customer.address}
+                        </div>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -119,12 +135,16 @@ export default async function CustomersPage() {
                         {formatCurrency(customer.total_outstanding || 0)}
                       </div>
                       {customer.has_outstanding && (
-                        <span className="text-xs text-red-600">Outstanding</span>
+                        <span className="text-xs text-red-600">
+                          Outstanding
+                        </span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="space-x-2">
-                        <Link href={`/sales/invoices/new?customer=${customer.id}`}>
+                        <Link
+                          href={`/sales/invoices/new?customer=${customer.id}`}
+                        >
                           <Button variant="outline" size="sm">
                             New Invoice
                           </Button>

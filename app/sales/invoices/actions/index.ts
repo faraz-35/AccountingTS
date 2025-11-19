@@ -75,6 +75,24 @@ export const finalizeInvoice = authActionClient
       parsedInput: { invoiceId, arAccountId, date },
       ctx: { supabase },
     }) => {
+      // Get invoice details for email
+      const { data: invoice } = await supabase
+        .from("invoices")
+        .select(
+          `
+          *,
+          customer:customers (
+            id,
+            name,
+            email
+          )
+        `,
+        )
+        .eq("id", invoiceId)
+        .single();
+
+      if (!invoice) throw new Error("Invoice not found");
+
       const { error } = await supabase.rpc("approve_invoice", {
         p_invoice_id: invoiceId,
         p_ar_account_id: arAccountId,
@@ -83,8 +101,32 @@ export const finalizeInvoice = authActionClient
 
       if (error) throw new Error(error.message);
 
+      // Email Stub - Log for now, implement actual email service later
+      const customerEmail = invoice.customer?.email;
+      if (customerEmail) {
+        // TODO: Integrate Resend/SendGrid here
+        console.log(
+          `[EMAIL SENT] To: ${customerEmail}, Subject: Invoice #${invoice.invoice_number}`,
+        );
+        console.log(
+          `Invoice details: Total: $${invoice.total_amount}, Due: ${invoice.due_date}`,
+        );
+
+        // Future implementation:
+        // await resend.emails.send({
+        //   from: 'invoices@yourcompany.com',
+        //   to: customerEmail,
+        //   subject: `Invoice #${invoice.invoice_number}`,
+        //   html: `<p>Dear ${invoice.customer.name},</p><p>Please find attached invoice #${invoice.invoice_number} for $${invoice.total_amount} due on ${invoice.due_date}.</p>`
+        // });
+      } else {
+        console.log(
+          `[EMAIL SKIPPED] Customer ${invoice.customer?.name} has no email address`,
+        );
+      }
+
       revalidatePath("/sales/invoices");
-      return { success: true };
+      return { success: true, emailSent: !!customerEmail };
     },
   );
 
