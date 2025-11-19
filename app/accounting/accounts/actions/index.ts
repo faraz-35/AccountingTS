@@ -1,6 +1,6 @@
 "use server";
 
-import { authAction } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/(common)/lib/safe-action";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { paths } from "@/(common)/lib/paths";
@@ -11,9 +11,9 @@ const createAccountSchema = z.object({
   parent_account_id: z.string().uuid().optional().nullable(),
 });
 
-export const createAccount = authAction(
-  createAccountSchema,
-  async (data, { supabase, authUser }) => {
+export const createAccount = authActionClient
+  .schema(createAccountSchema)
+  .action(async ({ parsedInput: data, ctx: { supabase, authUser } }) => {
     // 1. Get Org ID
     const { data: orgMember } = await supabase
       .from("organization_members")
@@ -52,12 +52,11 @@ export const createAccount = authAction(
 
     revalidatePath(paths.accounting.accounts);
     return { success: true, code: nextCode };
-  },
-);
+  });
 
-export const deleteAccount = authAction(
-  z.object({ id: z.string().uuid() }),
-  async (data, { supabase, authUser }) => {
+export const deleteAccount = authActionClient
+  .schema(z.object({ id: z.string().uuid() }))
+  .action(async ({ parsedInput: data, ctx: { supabase, authUser } }) => {
     // 1. Get Org ID and verify access
     const { data: orgMember } = await supabase
       .from("organization_members")
@@ -95,5 +94,4 @@ export const deleteAccount = authAction(
 
     revalidatePath(paths.accounting.accounts);
     return { success: true };
-  },
-);
+  });

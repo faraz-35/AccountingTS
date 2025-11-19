@@ -1,13 +1,13 @@
 "use server";
 
-import { authAction } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/(common)/lib/safe-action";
 import { journalEntrySchema } from "../../(common)/schemas";
 import { revalidatePath } from "next/cache";
 import { paths } from "@/(common)/lib/paths";
 
-export const postJournalEntry = authAction(
-  journalEntrySchema,
-  async (data, { supabase }) => {
+export const postJournalEntry = authActionClient
+  .schema(journalEntrySchema)
+  .action(async ({ parsedInput: data, ctx: { supabase } }) => {
     // Call the RPC function we created in Step 2.1
     const { error, data: journalId } = await supabase.rpc(
       "post_journal_entry",
@@ -28,5 +28,4 @@ export const postJournalEntry = authAction(
 
     revalidatePath(paths.accounting.journal);
     return { success: true, journalId };
-  },
-);
+  });

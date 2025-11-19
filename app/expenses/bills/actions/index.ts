@@ -1,6 +1,6 @@
 "use server";
 
-import { authAction } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/(common)/lib/safe-action";
 import {
   billSchema,
   approveBillSchema,
@@ -11,9 +11,9 @@ import { z } from "zod";
 import { generateBillNumber } from "../../(common)/utils";
 
 // 1. Save Draft
-export const saveBillDraft = authAction(
-  billSchema,
-  async (data, { supabase, authUser }) => {
+export const saveBillDraft = authActionClient
+  .schema(billSchema)
+  .action(async ({ parsedInput: data, ctx: { supabase, authUser } }) => {
     // Get user's organization
     const { data: orgMember } = await supabase
       .from("organization_members")
@@ -64,28 +64,31 @@ export const saveBillDraft = authAction(
 
     revalidatePath("/expenses/bills");
     return { success: true, billId: bill.id };
-  },
-);
+  });
 
 // 2. Approve (Post to GL)
-export const approveBill = authAction(
-  approveBillSchema,
-  async ({ billId, apAccountId, date }, { supabase }) => {
-    const { error } = await supabase.rpc("approve_bill", {
-      p_bill_id: billId,
-      p_ap_account_id: apAccountId,
-      p_date: date,
-    });
-    if (error) throw new Error(error.message);
-    revalidatePath("/expenses/bills");
-    return { success: true };
-  },
-);
+export const approveBill = authActionClient
+  .schema(approveBillSchema)
+  .action(
+    async ({
+      parsedInput: { billId, apAccountId, date },
+      ctx: { supabase },
+    }) => {
+      const { error } = await supabase.rpc("approve_bill", {
+        p_bill_id: billId,
+        p_ap_account_id: apAccountId,
+        p_date: date,
+      });
+      if (error) throw new Error(error.message);
+      revalidatePath("/expenses/bills");
+      return { success: true };
+    },
+  );
 
 // 3. Pay Bill
-export const recordBillPayment = authAction(
-  payBillSchema,
-  async (data, { supabase }) => {
+export const recordBillPayment = authActionClient
+  .schema(payBillSchema)
+  .action(async ({ parsedInput: data, ctx: { supabase } }) => {
     const { error } = await supabase.rpc("pay_bill", {
       p_bill_id: data.billId,
       p_payment_account_id: data.paymentAccountId,
@@ -97,12 +100,11 @@ export const recordBillPayment = authAction(
     if (error) throw new Error(error.message);
     revalidatePath("/expenses/bills");
     return { success: true };
-  },
-);
+  });
 
-export const deleteBill = authAction(
-  z.object({ id: z.string().uuid() }),
-  async (data, { supabase, authUser }) => {
+export const deleteBill = authActionClient
+  .schema(z.object({ id: z.string().uuid() }))
+  .action(async ({ parsedInput: data, ctx: { supabase, authUser } }) => {
     // Get user's organization
     const { data: orgMember } = await supabase
       .from("organization_members")
@@ -132,13 +134,12 @@ export const deleteBill = authAction(
 
     revalidatePath("/expenses/bills");
     return { success: true };
-  },
-);
+  });
 
 // Generate next bill number
-export const generateNextBillNumber = authAction(
-  z.object({}),
-  async (_, { supabase, authUser }) => {
+export const generateNextBillNumber = authActionClient
+  .schema(z.object({}))
+  .action(async ({ ctx: { supabase, authUser } }) => {
     const { data: orgMember } = await supabase
       .from("organization_members")
       .select("organization_id")
@@ -175,5 +176,4 @@ export const generateNextBillNumber = authAction(
     }
 
     return { billNumber: nextNumber };
-  },
-);
+  });

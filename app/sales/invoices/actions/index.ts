@@ -1,15 +1,15 @@
 "use server";
 
-import { authAction } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/(common)/lib/safe-action";
 import { invoiceSchema, finalizeInvoiceSchema } from "../../(common)/schemas";
 import { revalidatePath } from "next/cache";
 import { generateInvoiceNumber } from "../../(common)/utils";
 import { z } from "zod";
 
 // Action 1: Save Draft (Standard DB Insert)
-export const saveInvoiceDraft = authAction(
-  invoiceSchema,
-  async (data, { supabase, authUser }) => {
+export const saveInvoiceDraft = authActionClient
+  .schema(invoiceSchema)
+  .action(async ({ parsedInput: data, ctx: { supabase, authUser } }) => {
     // Get user's organization
     const { data: orgMember } = await supabase
       .from("organization_members")
@@ -65,29 +65,32 @@ export const saveInvoiceDraft = authAction(
 
     revalidatePath("/sales/invoices");
     return { success: true, invoiceId: invoice.id };
-  },
-);
+  });
 
 // Action 2: Finalize (Call RPC)
-export const finalizeInvoice = authAction(
-  finalizeInvoiceSchema,
-  async ({ invoiceId, arAccountId, date }, { supabase }) => {
-    const { error } = await supabase.rpc("approve_invoice", {
-      p_invoice_id: invoiceId,
-      p_ar_account_id: arAccountId,
-      p_date: date,
-    });
+export const finalizeInvoice = authActionClient
+  .schema(finalizeInvoiceSchema)
+  .action(
+    async ({
+      parsedInput: { invoiceId, arAccountId, date },
+      ctx: { supabase },
+    }) => {
+      const { error } = await supabase.rpc("approve_invoice", {
+        p_invoice_id: invoiceId,
+        p_ar_account_id: arAccountId,
+        p_date: date,
+      });
 
-    if (error) throw new Error(error.message);
+      if (error) throw new Error(error.message);
 
-    revalidatePath("/sales/invoices");
-    return { success: true };
-  },
-);
+      revalidatePath("/sales/invoices");
+      return { success: true };
+    },
+  );
 
-export const deleteInvoice = authAction(
-  z.object({ id: z.string().uuid() }),
-  async (data, { supabase, authUser }) => {
+export const deleteInvoice = authActionClient
+  .schema(z.object({ id: z.string().uuid() }))
+  .action(async ({ parsedInput: data, ctx: { supabase, authUser } }) => {
     // Get user's organization
     const { data: orgMember } = await supabase
       .from("organization_members")
@@ -120,13 +123,12 @@ export const deleteInvoice = authAction(
 
     revalidatePath("/sales/invoices");
     return { success: true };
-  },
-);
+  });
 
 // Generate next invoice number
-export const generateNextInvoiceNumber = authAction(
-  z.object({}),
-  async (_, { supabase, authUser }) => {
+export const generateNextInvoiceNumber = authActionClient
+  .schema(z.object({}))
+  .action(async ({ ctx: { supabase, authUser } }) => {
     const { data: orgMember } = await supabase
       .from("organization_members")
       .select("organization_id")
@@ -163,5 +165,4 @@ export const generateNextInvoiceNumber = authAction(
     }
 
     return { invoiceNumber: nextNumber };
-  },
-);
+  });

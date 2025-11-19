@@ -1,96 +1,101 @@
 "use server";
 
-import { authAction } from "@/(common)/lib/safe-action";
+import { authActionClient } from "@/(common)/lib/safe-action";
 import { uploadSchema } from "../../../(common)/schemas";
 import Papa from "papaparse";
 import { revalidatePath } from "next/cache";
 import { parseCSVDate } from "../../../(common)/types";
+import { z } from "zod";
 
-export const uploadBankStatement = authAction(
-  uploadSchema,
-  async ({ accountId, csvContent }, { supabase, authUser }) => {
-    // 1. Get Org ID
-    const { data: orgMember } = await supabase
-      .from("organization_members")
-      .select("organization_id")
-      .eq("user_id", authUser.id)
-      .single();
+export const uploadBankStatement = authActionClient
+  .schema(uploadSchema)
+  .action(
+    async ({
+      parsedInput: { accountId, csvContent },
+      ctx: { supabase, authUser },
+    }) => {
+      // 1. Get Org ID
+      const { data: orgMember } = await supabase
+        .from("organization_members")
+        .select("organization_id")
+        .eq("user_id", authUser.id)
+        .single();
 
-    if (!orgMember) throw new Error("Organization not found");
+      if (!orgMember) throw new Error("Organization not found");
 
-    // 2. Parse CSV
-    const { data: rows, errors } = Papa.parse(csvContent, {
-      header: true,
-      skipEmptyLines: true,
-    });
+      // 2. Parse CSV
+      const { data: rows, errors } = Papa.parse(csvContent, {
+        header: true,
+        skipEmptyLines: true,
+      });
 
-    if (errors.length > 0) {
-      throw new Error(`CSV Parse Error: ${errors[0].message}`);
-    }
-
-    if (!rows || rows.length === 0) {
-      throw new Error("CSV file is empty or could not be parsed");
-    }
-
-    // 3. Transform & Prepare Insert
-    // Try to detect common CSV headers and map them
-    const transactions = rows.map((row: any, index) => {
-      // Find date column (common headers: Date, Transaction Date, Date)
-      const dateField =
-        row.Date || row["Transaction Date"] || row["Date"] || row.date;
-      // Find amount column (common headers: Amount, Debit, Credit, Transaction Amount)
-      let amountField = row.Amount || row["Transaction Amount"] || row.amount;
-      const descriptionField =
-        row.Description ||
-        row.description ||
-        row["Description"] ||
-        row.Memo ||
-        row.memo;
-      const referenceField =
-        row.Reference ||
-        row.reference ||
-        row["Reference"] ||
-        row["Transaction ID"] ||
-        row["Transaction ID"];
-
-      // Clean amount field (remove commas, currency symbols, etc.)
-      if (typeof amountField === "string") {
-        amountField = amountField.replace(/[$,]/g, "");
+      if (errors.length > 0) {
+        throw new Error(`CSV Parse Error: ${errors[0].message}`);
       }
 
-      const amount = parseFloat(amountField);
-      if (isNaN(amount)) {
-        throw new Error(`Invalid amount in row ${index + 1}: ${amountField}`);
+      if (!rows || rows.length === 0) {
+        throw new Error("CSV file is empty or could not be parsed");
       }
 
-      return {
-        organization_id: orgMember.organization_id,
-        account_id: accountId,
-        date: dateField
-          ? parseCSVDate(dateField)
-          : new Date().toISOString().split("T")[0],
-        amount: amount,
-        description: descriptionField || "Imported Transaction",
-        external_id: referenceField || null,
-        status: "UNMATCHED",
-      };
-    });
+      // 3. Transform & Prepare Insert
+      // Try to detect common CSV headers and map them
+      const transactions = rows.map((row: any, index) => {
+        // Find date column (common headers: Date, Transaction Date, Date)
+        const dateField =
+          row.Date || row["Transaction Date"] || row["Date"] || row.date;
+        // Find amount column (common headers: Amount, Debit, Credit, Transaction Amount)
+        let amountField = row.Amount || row["Transaction Amount"] || row.amount;
+        const descriptionField =
+          row.Description ||
+          row.description ||
+          row["Description"] ||
+          row.Memo ||
+          row.memo;
+        const referenceField =
+          row.Reference ||
+          row.reference ||
+          row["Reference"] ||
+          row["Transaction ID"] ||
+          row["Transaction ID"];
 
-    // 4. Bulk Insert
-    const { error } = await supabase
-      .from("bank_transactions")
-      .insert(transactions);
+        // Clean amount field (remove commas, currency symbols, etc.)
+        if (typeof amountField === "string") {
+          amountField = amountField.replace(/[$,]/g, "");
+        }
 
-    if (error) throw new Error(error.message);
+        const amount = parseFloat(amountField);
+        if (isNaN(amount)) {
+          throw new Error(`Invalid amount in row ${index + 1}: ${amountField}`);
+        }
 
-    revalidatePath("/banking/reconciliation");
-    return { success: true, count: transactions.length };
-  },
-);
+        return {
+          organization_id: orgMember.organization_id,
+          account_id: accountId,
+          date: dateField
+            ? parseCSVDate(dateField)
+            : new Date().toISOString().split("T")[0],
+          amount: amount,
+          description: descriptionField || "Imported Transaction",
+          external_id: referenceField || null,
+          status: "UNMATCHED",
+        };
+      });
 
-export const deleteBankTransaction = authAction(
-  z.object({ id: z.string().uuid() }),
-  async ({ id }, { supabase, authUser }) => {
+      // 4. Bulk Insert
+      const { error } = await supabase
+        .from("bank_transactions")
+        .insert(transactions);
+
+      if (error) throw new Error(error.message);
+
+      revalidatePath("/banking/reconciliation");
+      return { success: true, count: transactions.length };
+    },
+  );
+
+export const deleteBankTransaction = authActionClient
+  .schema(z.object({ id: z.string().uuid() }))
+  .action(async ({ parsedInput: { id }, ctx: { supabase, authUser } }) => {
     // Get user's organization
     const { data: orgMember } = await supabase
       .from("organization_members")
@@ -123,5 +128,4 @@ export const deleteBankTransaction = authAction(
 
     revalidatePath("/banking/reconciliation");
     return { success: true };
-  },
-);
+  });
