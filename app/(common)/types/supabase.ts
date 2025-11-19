@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      accounts: {
+        Row: {
+          code: string
+          created_at: string | null
+          current_balance: number | null
+          id: string
+          is_system: boolean | null
+          name: string
+          organization_id: string
+          parent_account_id: string | null
+          type: Database["public"]["Enums"]["account_type"]
+          updated_at: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          current_balance?: number | null
+          id?: string
+          is_system?: boolean | null
+          name: string
+          organization_id: string
+          parent_account_id?: string | null
+          type: Database["public"]["Enums"]["account_type"]
+          updated_at?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          current_balance?: number | null
+          id?: string
+          is_system?: boolean | null
+          name?: string
+          organization_id?: string
+          parent_account_id?: string | null
+          type?: Database["public"]["Enums"]["account_type"]
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "accounts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "accounts_parent_account_id_fkey"
+            columns: ["parent_account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       activities: {
         Row: {
           action: string
@@ -163,6 +217,324 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user_profile_details"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bills: {
+        Row: {
+          bill_number: string
+          created_at: string | null
+          currency: string | null
+          date: string
+          due_date: string
+          id: string
+          organization_id: string
+          status: Database["public"]["Enums"]["bill_status"] | null
+          total_amount: number | null
+          updated_at: string | null
+          vendor_id: string
+        }
+        Insert: {
+          bill_number: string
+          created_at?: string | null
+          currency?: string | null
+          date: string
+          due_date: string
+          id?: string
+          organization_id: string
+          status?: Database["public"]["Enums"]["bill_status"] | null
+          total_amount?: number | null
+          updated_at?: string | null
+          vendor_id: string
+        }
+        Update: {
+          bill_number?: string
+          created_at?: string | null
+          currency?: string | null
+          date?: string
+          due_date?: string
+          id?: string
+          organization_id?: string
+          status?: Database["public"]["Enums"]["bill_status"] | null
+          total_amount?: number | null
+          updated_at?: string | null
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bills_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bills_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customers: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          currency: string | null
+          email: string | null
+          id: string
+          name: string
+          organization_id: string
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          currency?: string | null
+          email?: string | null
+          id?: string
+          name: string
+          organization_id: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          currency?: string | null
+          email?: string | null
+          id?: string
+          name?: string
+          organization_id?: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customers_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoice_lines: {
+        Row: {
+          account_id: string | null
+          amount: number | null
+          created_at: string | null
+          description: string
+          id: string
+          invoice_id: string
+          quantity: number | null
+          unit_price: number | null
+        }
+        Insert: {
+          account_id?: string | null
+          amount?: number | null
+          created_at?: string | null
+          description: string
+          id?: string
+          invoice_id: string
+          quantity?: number | null
+          unit_price?: number | null
+        }
+        Update: {
+          account_id?: string | null
+          amount?: number | null
+          created_at?: string | null
+          description?: string
+          id?: string
+          invoice_id?: string
+          quantity?: number | null
+          unit_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_lines_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoice_lines_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoices: {
+        Row: {
+          created_at: string | null
+          currency: string | null
+          customer_id: string
+          date: string
+          due_date: string
+          id: string
+          invoice_number: string
+          notes: string | null
+          organization_id: string
+          status: Database["public"]["Enums"]["invoice_status"] | null
+          total_amount: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          currency?: string | null
+          customer_id: string
+          date: string
+          due_date: string
+          id?: string
+          invoice_number: string
+          notes?: string | null
+          organization_id: string
+          status?: Database["public"]["Enums"]["invoice_status"] | null
+          total_amount?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          currency?: string | null
+          customer_id?: string
+          date?: string
+          due_date?: string
+          id?: string
+          invoice_number?: string
+          notes?: string | null
+          organization_id?: string
+          status?: Database["public"]["Enums"]["invoice_status"] | null
+          total_amount?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      journal_entries: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          date: string
+          description: string | null
+          entry_number: number
+          id: string
+          organization_id: string
+          reference_id: string | null
+          reference_type: string | null
+          status: Database["public"]["Enums"]["journal_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          date: string
+          description?: string | null
+          entry_number?: number
+          id?: string
+          organization_id: string
+          reference_id?: string | null
+          reference_type?: string | null
+          status?: Database["public"]["Enums"]["journal_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          date?: string
+          description?: string | null
+          entry_number?: number
+          id?: string
+          organization_id?: string
+          reference_id?: string | null
+          reference_type?: string | null
+          status?: Database["public"]["Enums"]["journal_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journal_entries_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "journal_entries_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user_profile_details"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "journal_entries_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      journal_entry_lines: {
+        Row: {
+          account_id: string
+          created_at: string | null
+          credit: number | null
+          debit: number | null
+          description: string | null
+          id: string
+          journal_entry_id: string
+        }
+        Insert: {
+          account_id: string
+          created_at?: string | null
+          credit?: number | null
+          debit?: number | null
+          description?: string | null
+          id?: string
+          journal_entry_id: string
+        }
+        Update: {
+          account_id?: string
+          created_at?: string | null
+          credit?: number | null
+          debit?: number | null
+          description?: string | null
+          id?: string
+          journal_entry_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journal_entry_lines_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "journal_entry_lines_journal_entry_id_fkey"
+            columns: ["journal_entry_id"]
+            isOneToOne: false
+            referencedRelation: "journal_entries"
             referencedColumns: ["id"]
           },
         ]
@@ -365,6 +737,47 @@ export type Database = {
           },
         ]
       }
+      vendors: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          name: string
+          organization_id: string
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          name: string
+          organization_id: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          name?: string
+          organization_id?: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendors_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       user_profile_details: {
@@ -392,7 +805,11 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      account_type: "ASSET" | "LIABILITY" | "EQUITY" | "REVENUE" | "EXPENSE"
       audit_action: "INSERT" | "UPDATE" | "DELETE"
+      bill_status: "OPEN" | "PAID" | "PARTIAL" | "OVERDUE" | "VOID"
+      invoice_status: "DRAFT" | "SENT" | "PAID" | "PARTIAL" | "OVERDUE" | "VOID"
+      journal_status: "DRAFT" | "POSTED" | "ARCHIVED"
       organization_role: "owner" | "admin" | "member" | "viewer"
       user_role: "admin" | "member" | "viewer"
       user_status: "active" | "inactive" | "suspended"
@@ -523,7 +940,11 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      account_type: ["ASSET", "LIABILITY", "EQUITY", "REVENUE", "EXPENSE"],
       audit_action: ["INSERT", "UPDATE", "DELETE"],
+      bill_status: ["OPEN", "PAID", "PARTIAL", "OVERDUE", "VOID"],
+      invoice_status: ["DRAFT", "SENT", "PAID", "PARTIAL", "OVERDUE", "VOID"],
+      journal_status: ["DRAFT", "POSTED", "ARCHIVED"],
       organization_role: ["owner", "admin", "member", "viewer"],
       user_role: ["admin", "member", "viewer"],
       user_status: ["active", "inactive", "suspended"],

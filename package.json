@@ -15,7 +15,7 @@
     "db:push": "pnpm supabase db push --project-id dupargbrwczchwdcuvug",
     "db:diff": "pnpm supabase db diff --project-id dupargbrwczchwdcuvug",
     "db:reset": "pnpm supabase db reset --project-id dupargbrwczchwdcuvug",
-    "db:generate-types": "pnpm supabase gen types typescript --project-id dupargbrwczchwdcuvug --schema public > app/common/types/supabase.ts",
+    "db:generate-types": "pnpm supabase gen types typescript --project-id dupargbrwczchwdcuvug --schema public > app/(common)/types/supabase.ts",
     "code": "node scripts/repomix.js"
   },
   "dependencies": {
