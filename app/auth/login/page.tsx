@@ -17,7 +17,7 @@ export default function LoginPage() {
     if (redirectTo) {
       router.push(redirectTo);
     } else {
-      router.push(paths.home);
+      router.push(paths.dashboard);
     }
   };
 

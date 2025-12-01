@@ -21,7 +21,7 @@ import { paths } from "@/common/lib/paths";
 const navigationItems = [
   {
     title: "Dashboard",
-    href: paths.dashboard.root,
+    href: paths.dashboard,
     icon: Home,
   },
   {

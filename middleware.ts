@@ -6,7 +6,7 @@ import { paths } from "./app/(common)/lib/paths";
  * Protected routes that require authentication
  */
 const protectedRoutes = [
-  paths.dashboard.root,
+  paths.dashboard,
   paths.accounting.root,
   paths.sales.invoices,
   paths.sales.customers,
@@ -23,7 +23,7 @@ const publicOnlyRoutes = [paths.auth.login, paths.auth.register];
 /**
  * Middleware to handle authentication and route protection
  */
-export async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Create Supabase client for middleware
