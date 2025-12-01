@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { LoginForm } from "../components/login-form";
-import { PasswordResetForm } from "../components/password-reset-form";
+import { LoginForm } from "./components/login-form";
+import { PasswordResetForm } from "./components/password-reset-form";
 import { paths } from "@/common/lib/paths";
 
 export default function LoginPage() {

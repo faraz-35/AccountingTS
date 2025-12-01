@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { RegisterForm } from "../components/register-form";
+import { RegisterForm } from "./components/register-form";
 import { paths } from "@/common/lib/paths";
 
 export default function RegisterPage() {
