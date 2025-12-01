@@ -4,8 +4,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/(common)/components/ui";
-import { paths } from "@/(common)/lib/paths";
+} from "@/common/components/ui";
+import { paths } from "@/common/lib/paths";
 import {
   Building2,
   Users,

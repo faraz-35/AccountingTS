@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useAction } from "next-safe-action/hooks";
 import { createAccount } from "../actions";
-import { Button } from "@/(common)/components/ui";
-import { createSupabaseClient } from "@/(common)/lib/supabase-client";
+import { Button } from "@/common/components/ui";
+import { createSupabaseClient } from "@/common/lib/supabase-client";
 
 export function DebugAccount() {
   const [result, setResult] = useState<string>("");

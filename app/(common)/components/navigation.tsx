@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/(common)/lib/utils";
-import { Button } from "@/(common)/components/ui/button";
+import { cn } from "@/common/lib/utils";
+import { Button } from "@/common/components/ui/button";
 import {
   Building2,
   FileText,
@@ -16,7 +16,7 @@ import {
   Menu,
 } from "lucide-react";
 import { useState } from "react";
-import { paths } from "@/(common)/lib/paths";
+import { paths } from "@/common/lib/paths";
 
 const navigationItems = [
   {

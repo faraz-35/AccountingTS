@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { RegisterForm } from "../components/register-form";
+import { paths } from "@/common/lib/paths";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function RegisterPage() {
       if (redirectTo) {
         router.push(redirectTo);
       } else {
-        router.push("/auth/login");
+        router.push(paths.auth.login);
       }
     }, 3000);
   };
@@ -37,7 +38,10 @@ export default function RegisterPage() {
         <div className="text-center text-sm">
           <p className="text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/auth/login" className="text-primary hover:underline">
+            <Link
+              href={paths.auth.login}
+              className="text-primary hover:underline"
+            >
               Sign in
             </Link>
           </p>

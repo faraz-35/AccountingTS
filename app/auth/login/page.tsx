@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LoginForm } from "../components/login-form";
 import { PasswordResetForm } from "../components/password-reset-form";
+import { paths } from "@/common/lib/paths";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -16,7 +17,7 @@ export default function LoginPage() {
     if (redirectTo) {
       router.push(redirectTo);
     } else {
-      router.push("/");
+      router.push(paths.home);
     }
   };
 
@@ -53,7 +54,7 @@ export default function LoginPage() {
               <p className="text-muted-foreground">
                 Don't have an account?{" "}
                 <Link
-                  href="/auth/register"
+                  href={paths.auth.register}
                   className="text-primary hover:underline"
                 >
                   Sign up

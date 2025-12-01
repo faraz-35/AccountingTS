@@ -1,31 +1,40 @@
 export const paths = {
-  home: "/",
+  home: "/dashboard",
   auth: {
     login: "/auth/login",
     register: "/auth/register",
-  },
-  dashboard: {
-    root: "/",
-    settings: "/dashboard/settings",
   },
   accounting: {
     root: "/accounting",
     accounts: "/accounting/accounts",
     journal: "/accounting/journal",
     reports: {
-      root: "/reports",
       trialBalance: "/reports/financial/trial-balance",
       profitLoss: "/reports/financial/profit-loss",
       balanceSheet: "/reports/financial/balance-sheet",
     },
   },
   sales: {
-    invoices: "/sales/invoices",
     customers: "/sales/customers",
+    invoices: "/sales/invoices",
   },
   expenses: {
-    bills: "/expenses/bills",
     vendors: "/expenses/vendors",
+    bills: "/expenses/bills",
+  },
+  banking: {
+    reconciliation: {
+      root: "/banking/reconciliation",
+      account: (accountId: string) => `/banking/reconciliation/${accountId}`,
+    },
+  },
+  reports: {
+    root: "/reports",
+    financial: {
+      trialBalance: "/reports/financial/trial-balance",
+      profitLoss: "/reports/financial/profit-loss",
+      balanceSheet: "/reports/financial/balance-sheet",
+    },
   },
   settings: {
     users: "/settings/users",
@@ -33,6 +42,5 @@ export const paths = {
   api: {
     auth: "/api/auth",
     dashboard: "/api/dashboard",
-    accounting: "/api/accounting",
   },
 } as const;

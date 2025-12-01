@@ -1,4 +1,4 @@
-import { DashboardLayout } from "@/(common)/components/layout";
+import { DashboardLayout } from "@/common/components/layout";
 
 export default function ExpensesLayout({
   children,
